@@ -1,0 +1,57 @@
+/* 비령 vC.05의 원본 레이아웃·색상·도트 장식 위에 체험판 네비게이션만 추가. */
+.demo-hero { height:238px }
+.demo-hero .hero-content{top:71px}
+.demo-hero h1{font-size:clamp(23px,3.15vw,42px);letter-spacing:.1em}
+.demo-hero .hero-canopy{top:-77px;height:260px}
+.demo-hero .hero-tagline{font-size:12px}
+.top-buttons a.chip-button{text-decoration:none;display:inline-block}
+.demo-layout{grid-template-columns:215px minmax(0,1fr) 280px;align-items:start}
+.demo-layout .demo-navigation{grid-column:1;min-height:690px}
+.demo-layout .demo-content{grid-column:2;min-height:690px}
+.demo-layout .demo-status{grid-column:3;min-height:690px}
+.demo-navigation .fine-label{margin:17px 0 10px}
+.nav-landscape{display:block;width:100%;height:112px;object-fit:cover;image-rendering:pixelated;border:1px solid #556374;background:#0d1827;opacity:.83}
+.demo-nav{margin-top:19px}
+.nav-heading{font-size:11px!important;letter-spacing:.16em;color:#d7ae76!important;margin:15px 0 7px!important}
+.demo-nav-link{display:flex;align-items:center;gap:9px;padding:12px 7px;margin-bottom:7px;border:1px solid #476074;background:#0c1a29;text-decoration:none;color:#e9decc;transition:background .15s}
+.demo-nav-link:hover,.demo-nav-link[aria-current='page']{background:#263748;border-color:#b49a6e}
+.demo-nav-link[aria-current='page']{box-shadow:inset 3px 0 0 #d4b078}
+.demo-nav-link>span:last-child{min-width:0}
+.demo-nav-link strong{display:block;font-size:13px;letter-spacing:.03em;white-space:nowrap}
+.demo-nav-link small{display:block;font-size:9px;color:#acbaba;margin-top:4px;line-height:1.65}
+.nav-glyph{display:grid;place-items:center;width:29px;height:29px;flex:none;background:#172c3e;border:1px solid #5c7281;color:#e4c48b;font-size:16px}
+.nav-bottom-info{margin-top:40px;border-top:1px dashed #4d5d68;padding-top:13px;font-size:11px;color:#97a8a5;line-height:1.8}
+.nav-bottom-mark{color:#d3b078}
+.demo-content-desc{padding:14px 19px 0;font-size:12px;line-height:1.8;color:#b7c9c5;word-break:keep-all}
+.demo-content .play-host{padding:12px 18px 22px}
+.demo-content .page-head h2{font-size:21px}
+.demo-content #playRoot{min-height:350px}
+.demo-content #playRoot :where(button){cursor:pointer}
+.demo-status .status-stat{padding:9px 8px 10px;min-height:59px}
+.demo-status .status-stat b{font-size:20px}
+.demo-status .status-bar-track{justify-content:flex-start}
+.demo-status .status-menu{margin-top:15px}
+.stat-caption{font-size:10px;line-height:1.75;color:#90a5a7;text-align:left;margin:13px 0 2px;word-break:keep-all}
+.boot-note{color:#b5c6c4;font-size:13px;margin:20px 0}
+.demo-profile{height:auto;max-height:min(88vh,760px)}
+.demo-profile-body{padding:18px 23px 26px;overflow-y:auto;color:#e8dcc5}
+.demo-profile-top{display:flex;gap:13px;align-items:center;padding-bottom:17px;border-bottom:1px solid #4d6477;margin-bottom:17px}
+.demo-profile-face{width:70px;height:70px;border:1px solid #b19363;background:#16283a;display:grid;place-items:center;font-size:31px;color:#d9be89;box-shadow:inset 0 0 0 4px #081522}
+.demo-profile-name{font-size:19px;font-weight:800;margin-bottom:6px}
+.demo-profile-intro{font-size:11px;color:#aebfbe}
+.demo-profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.demo-profile-detail{border:1px solid #455b6e;background:#15273a;padding:12px;text-align:center}
+.demo-profile-detail span{display:block;font-size:11px;color:#b0bec1;margin-bottom:6px}
+.demo-profile-detail b{font-size:23px;color:#e6cf9f}
+.demo-profile-meta{font-size:11px;line-height:1.95;color:#b8cbc8;margin-top:18px}
+.demo-profile-controls{display:flex;gap:7px;justify-content:flex-end;margin-top:18px}
+.demo-profile-controls button{background:#172b3d;color:#ead7b3;border:1px solid #a58966;padding:9px 13px;font-size:12px}
+.demo-toasts{position:fixed;right:16px;bottom:20px;z-index:110;display:grid;gap:7px;max-width:min(380px,calc(100vw - 32px))}
+.demo-toast{background:#17293b;color:#f5e9d0;border:1px solid #b59d72;padding:11px 14px;box-shadow:5px 5px #030a14;font-size:12px;line-height:1.7}
+.demo-toast strong{display:block;color:#dbbd83;margin-bottom:4px}
+/* 추가 전투는 이 독립판의 콘텐츠가 아님. 선택 화면도 원본 퇴마 실습 1인 전투만. */
+.demo-content [data-battle-mode='extra']{display:none!important}
+@media(max-width:1230px){.demo-layout{grid-template-columns:170px minmax(0,1fr) 235px;gap:11px}.demo-navigation,.demo-status{padding:16px 11px}.demo-content .play-host{padding:10px}}
+@media(max-width:980px){.demo-layout{grid-template-columns:minmax(0,1fr) 240px}.demo-layout .demo-navigation{grid-column:1/-1;min-height:0;display:block;padding:14px}.nav-landscape,.demo-navigation .fine-label,.nav-bottom-info{display:none}.demo-nav{display:flex;gap:10px;margin:0}.demo-nav .nav-heading{display:none}.demo-nav-link{flex:1;margin:0}.demo-layout .demo-content{grid-column:1;min-height:0}.demo-layout .demo-status{grid-column:2;min-height:0}.demo-hero{height:210px}.demo-hero .hero-content{top:60px}}
+@media(max-width:700px){.demo-layout{display:flex;flex-direction:column}.demo-layout .demo-navigation,.demo-layout .demo-content,.demo-layout .demo-status{width:100%;position:static}.demo-layout .demo-content{order:2}.demo-layout .demo-status{order:3}.demo-hero{height:194px}.demo-hero .hero-content{top:54px}.demo-hero h1{font-size:clamp(22px,5vw,34px)}.demo-hero .hero-tagline{font-size:10px}.demo-hero .hero-canopy{top:-50px;height:207px}.demo-navigation .panel-heading{display:none}.demo-nav{gap:7px}.demo-nav-link{padding:9px 6px}.nav-glyph{display:none}.demo-content .play-host{padding:10px 8px 17px}.demo-profile-grid{grid-template-columns:repeat(3,1fr)}.demo-status .status-stats{grid-template-columns:repeat(6,1fr)}.demo-status .status-stat{padding:8px 3px;text-align:center;align-items:center}.demo-status .status-stat b{font-size:17px}.demo-status .status-menu{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:455px){.demo-hero h1{font-size:21px}.demo-hero .hero-mark{font-size:20px}.demo-hero .hero-content{top:48px}.demo-hero .hero-tagline{padding:0 12px}.demo-hero{height:175px}.top-buttons{gap:4px}.top-buttons .chip-button{font-size:9px}.demo-content .page-head{gap:6px;padding:11px 9px}.demo-content .page-head h2{font-size:17px}.demo-content .page-home{font-size:10px;padding:7px 5px}.demo-profile-grid{grid-template-columns:repeat(2,1fr)}}

@@ -1,0 +1,14 @@
+{
+  "name": "biryeong-combat-exploration-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "비령 vC.05의 전투(튜토리얼·1인 3종)와 개척(산길 1~4) 독립 체험판",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node scripts/serve.mjs",
+    "dev": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
