@@ -130,7 +130,8 @@
     $('resetSave').addEventListener('click', () => {
       if (!window.confirm('체험판 전투·개척 기록과 소지품을 모두 초기화할까요? 비령 본편 계정에는 영향을 주지 않습니다.')) return;
       demo.reset();
-      location.href = location.pathname + location.search + '#/battle';
+      // 동일 문서 해시 이동과 전체 새로고침을 중복 실행하지 않는다.
+      history.replaceState(null, '', location.pathname + location.search + '#/battle');
       location.reload();
     });
   }

@@ -66,3 +66,59 @@ test('튜토리얼 3단계 소지품 클릭은 실습 코어의 이벤트 조건
   assert.match(outer, /id="profileInventory"\s+data-tutorial-real-items-btn/)
   assert.match(outer, /\$\('inventoryOpen'\)\.addEventListener\('click', openInventory\)/)
 })
+
+test('초기화는 이전 저장 데이터가 pagehide에서 다시 기록돼도 다음 시작에서 새 캐릭터로 복구한다', () => {
+  const SAVE_KEY = 'biryeong-battle-pioneer-demo-v1'
+  const previous = JSON.stringify({
+    profile: {name:'비령 견습생'},
+    game: {hp:1, hpMax:100, mp:3, inventory:{'old-potion':2}, tutorialSnap:{hp:1}},
+    counts: {battles:11}, playLog: [{message:'old'}]
+  })
+  const local = new Map([[SAVE_KEY,previous], ['biryeong-save-v1','original-character']])
+  const session = new Map()
+  const localStorage = {getItem:k=>local.get(k)??null,setItem:(k,v)=>local.set(k,v),removeItem:k=>local.delete(k)}
+  const sessionStorage = {getItem:k=>session.get(k)??null,setItem:(k,v)=>session.set(k,v),removeItem:k=>session.delete(k)}
+  const boot = () => {
+    const window = {}
+    vm.runInNewContext(read('public/bootstrap.js'), {window,localStorage,sessionStorage,console})
+    return window
+  }
+  const oldPage = boot()
+  assert.equal(JSON.parse(local.get(SAVE_KEY)).game.hp,1)
+  oldPage.BiryeongDemo.reset()
+  assert.equal(oldPage.BiryeongDemo.isResetInProgress(),true)
+  assert.equal(local.has(SAVE_KEY),false)
+  assert.equal(session.get(`${SAVE_KEY}:reset-pending`),'1')
+  // 수정 전에는 기존 React pagehide 핸들러가 이전 HP를 그대로 다시 저장했다.
+  localStorage.setItem(SAVE_KEY,previous)
+  const freshPage = boot()
+  const resetData = JSON.parse(local.get(SAVE_KEY))
+  assert.equal(resetData.profile.name,'비령 견습생')
+  assert.deepEqual(Object.values(resetData.profile.stats).sort(), [3,3,3,3,3,3])
+  assert.equal('game' in resetData,false,'이전 체력과 소지품은 삭제되어야 한다')
+  assert.equal('counts' in resetData,false)
+  assert.equal('playLog' in resetData,false)
+  assert.equal(session.has(`${SAVE_KEY}:reset-pending`),false,'새 시작 후 플래그 해제')
+  assert.equal(freshPage.BiryeongDemo.isResetInProgress(),false)
+  assert.equal(local.get('biryeong-save-v1'),'original-character','원본 비령 저장값은 그대로')
+  // 이후 다시 새로고침하더라도 정상 플레이 중 새로 기록된 상태는 유지해야 한다.
+  resetData.game = {hp:90,hpMax:100}
+  localStorage.setItem(SAVE_KEY,JSON.stringify(resetData))
+  boot()
+  assert.equal(JSON.parse(local.get(SAVE_KEY)).game.hp,90)
+})
+
+test('전투 코어의 자동 저장은 초기화 도중 막혀야 한다', () => {
+  const core = read('public/play/play.js')
+  assert.match(core, /function H8\(e\)\{if\(window\.BiryeongDemo\?\.isResetInProgress\?\.\(\)\)return!0;/)
+  const html = read('public/index.html')
+  assert.match(html, /src="bootstrap\.js\?v=reset-fix2"/)
+  assert.match(html, /src="play\/play\.js\?v=reset-fix2"/)
+})
+
+
+test('초기화는 해시만 이동하지 않고 한 번의 전체 새로고침을 수행한다', () => {
+  const outer = read('public/standalone.js')
+  assert.match(outer, /demo\.reset\(\);\s*\/\/[^\n]*\n\s*history\.replaceState\(null, '', location\.pathname \+ location\.search \+ '#\/battle'\);\s*location\.reload\(\)/)
+  assert.doesNotMatch(outer, /location\.href = location\.pathname/)
+})

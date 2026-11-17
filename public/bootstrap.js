@@ -2,6 +2,8 @@
 (() => {
   'use strict';
   const SAVE_KEY = 'biryeong-battle-pioneer-demo-v1';
+  const RESET_PENDING_KEY = `${SAVE_KEY}:reset-pending`;
+  let resetInProgress = false;
   const STAT_KEYS = ['insight', 'aggression', 'endurance', 'control', 'agility', 'comprehension'];
   const STATS = Object.fromEntries(STAT_KEYS.map((k) => [k, 3]));
   const PROFILE = Object.freeze({
@@ -10,6 +12,13 @@
   });
 
   function ensureDemoSave() {
+    // 이전 화면의 pagehide 저장이 초기화 직후 과거 체력을 되살릴 수 있다.
+    // 새 페이지가 시작될 때 남아 있는 초기화 요청을 먼저 확정한다.
+    let pendingReset = false;
+    try { pendingReset = sessionStorage.getItem(RESET_PENDING_KEY) === '1'; } catch {}
+    if (pendingReset) {
+      try { localStorage.removeItem(SAVE_KEY); } catch {}
+    }
     let data;
     try { data = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch { data = null; }
     if (!data || typeof data !== 'object') data = {};
@@ -21,7 +30,12 @@
       data.game.name = PROFILE.name;
       data.game.greeting = PROFILE.intro;
     }
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch (error) {
+    try {
+      localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+      if (pendingReset) {
+        try { sessionStorage.removeItem(RESET_PENDING_KEY); } catch {}
+      }
+    } catch (error) {
       console.warn('[비령 체험판] 브라우저 저장을 사용할 수 없습니다.', error);
     }
   }
@@ -35,6 +49,17 @@
     server: false,
   });
   window.BiryeongPerk = () => null;
-  window.BiryeongDemo = Object.freeze({ SAVE_KEY, PROFILE, STAT_KEYS, reset() { localStorage.removeItem(SAVE_KEY); } });
+  window.BiryeongDemo = Object.freeze({
+    SAVE_KEY, PROFILE, STAT_KEYS,
+    isResetInProgress: () => resetInProgress,
+    reset() {
+      // React의 자동 저장 타이머 / pagehide 핸들러보다 먼저 저장을 잠근다.
+      resetInProgress = true;
+      try { sessionStorage.setItem(RESET_PENDING_KEY, '1'); } catch {}
+      try { localStorage.removeItem(SAVE_KEY); } catch (error) {
+        console.warn('[비령 체험판] 초기화 중 저장 삭제 실패', error);
+      }
+    },
+  });
   ensureDemoSave();
 })();
