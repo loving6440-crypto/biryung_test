@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="standalone.css">
   <script src="bootstrap.js" defer></script>
   <script src="play/play.js" defer></script>
-  <script src="standalone.js" defer></script>
+  <script src="standalone.js?v=tutorial3-fix1" defer></script>
 </head>
 <body>
   <div class="world-dots" aria-hidden="true"></div>
@@ -88,7 +88,7 @@
         <p class="stat-caption">샘플 기본 스탯은 6종 모두 3으로 고정됩니다. 쇠약 같은 상태 이상이 걸리면 전투·개척에 적용되는 수치는 일시적으로 달라질 수 있습니다.</p>
         <div class="status-spacer"></div>
         <div class="status-menu" role="group" aria-label="캐릭터 메뉴">
-          <button id="inventoryOpen" type="button"><i>囊</i><span>소지품</span></button>
+          <button id="inventoryOpen" type="button" data-tutorial-real-items-btn><i>囊</i><span>소지품</span></button>
           <button id="viewProfile" type="button"><i>人</i><span>프로필</span></button>
           <button id="resetSave" type="button"><i>初</i><span>초기화</span></button>
         </div>

@@ -75,7 +75,7 @@
       체력 <strong>${Math.ceil(p?.hp ?? 100)} / ${p?.hpMax ?? 100}</strong> · 의지력 <strong>${Math.floor(p?.mp ?? 100)} / ${p?.mpMax ?? 100}</strong><br>
       영력 <strong>${Math.floor(p?.spirit ?? 100)}</strong> · 소지금 <strong>${Math.floor(p?.money ?? 50)}냥</strong><br>
       기본 육조 스탯은 모두 3으로 고정되어 있으며, 다른 서버의 프로필과 연동되지 않습니다.</p>
-    <div class="demo-profile-controls"><button type="button" id="profileInventory">소지품 열기</button><button type="button" id="profileDone">닫기</button></div>`;
+    <div class="demo-profile-controls"><button type="button" id="profileInventory" data-tutorial-real-items-btn>소지품 열기</button><button type="button" id="profileDone">닫기</button></div>`;
     $('profileDone').onclick = () => $('profileDialog').close();
     $('profileInventory').onclick = () => { $('profileDialog').close(); openInventory(); };
   }

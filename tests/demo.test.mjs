@@ -53,3 +53,16 @@ test('정적 배포 외 의존성이 없다', () => {
   assert.match(html, /play\/play\.js/)
   assert.match(html, /id="profileDialog"/)
 })
+
+// 원본 전투 튜토리얼 3단계의 realItems 이벤트는
+// document.capture에서 [data-tutorial-real-items-btn] 클릭만 감지한다.
+test('튜토리얼 3단계 소지품 클릭은 실습 코어의 이벤트 조건과 연결된다', () => {
+  const html = read('public/index.html')
+  const outer = read('public/standalone.js')
+  const core = read('public/play/play.js')
+  assert.match(core, /data-tutorial-real-items-btn/)
+  assert.match(core, /allow!=="realItems"/)
+  assert.match(html, /<button\s+id="inventoryOpen"[^>]*\bdata-tutorial-real-items-btn\b/)
+  assert.match(outer, /id="profileInventory"\s+data-tutorial-real-items-btn/)
+  assert.match(outer, /\$\('inventoryOpen'\)\.addEventListener\('click', openInventory\)/)
+})
